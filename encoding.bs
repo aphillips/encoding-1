@@ -2678,6 +2678,19 @@ issues. Browsers also should disable this feature if the resource was decoded us
 
 
 
+<h2 class=no-num id=implementation-considerations>Implementation considerations</h2>
+
+<p>Instead of supporting <a for=/>streams</a> with arbitrary <a for=stream>prepend</a>, the
+<a for=/>decoders</a> for <a for=/>encodings</a> in this standard only need the ability to unread
+the current byte. Together with a single-byte buffer for <a>gb18030</a> and <a>ISO-2022-JP</a> that
+is sufficient to implement the algorithms. E.g., for <a>gb18030</a> when hitting a bogus byte while
+<a>gb18030 third</a> is not 0x00, <a>gb18030 second</a> could be moved into the single-byte buffer
+to be returned next, and <a>gb18030 third</a> would be the new <a>gb18030 first</a>, checked for not
+being 0x00 after the single-byte buffer was returned and emptied. This is possible as the range for
+the first and third byte in <a>gb18030</a> is identical.
+
+
+
 <div data-fill-with=references></div>
 
 
