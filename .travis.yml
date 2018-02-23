@@ -2,16 +2,18 @@ language: generic
 
 env:
   global:
-    - ENCRYPTION_LABEL: "eaa0f98d3fae"
-addons:
-  apt:
-    packages:
-      - oracle-java8-set-default
-install:
-  - curl -O https://sideshowbarker.net/nightlies/jar/vnu.jar
+    - ENCRYPTION_LABEL="eaa0f98d3fae"
+    - CHECKER_FILTER="Text run is not in Unicode Normalization Form C\.|.*appears to be written in.*|.*Charmod C073.*"
+    - EXTRA_FILES="*.txt *.json *.css"
+    - POST_BUILD_STEP='python visualize.py "$DIR/"'
+
 script:
-  - bash ./deploy.sh
-  - /usr/lib/jvm/java-8-oracle/jre/bin/java -jar vnu.jar --skip-non-html /home/travis/build/whatwg/encoding
+  - make deploy
+
+branches:
+  only:
+    - master
+
 notifications:
   email:
     on_success: never
